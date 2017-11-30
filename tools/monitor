@@ -1,0 +1,6 @@
+#!/bin/bash
+
+while read line
+do
+    notify-send "Monitor: " "$line"
+done < "${1:-/dev/stdin}"

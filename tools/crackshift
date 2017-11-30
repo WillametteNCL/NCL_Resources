@@ -1,0 +1,57 @@
+#!/usr/bin/env python
+
+import sys
+import argparse
+
+try:
+    import enchant
+except ImportError:
+    print "Module pyenchant not found."
+    sys.exit(1)
+
+d = enchant.Dict("en_US")
+
+parser = argparse.ArgumentParser(description="calculate shift cipher possibilities for a given string")
+parser.add_argument("-a","--all",
+                    help="Print all possible combinations instead of only ones that contain english words",
+                    action="store_true")
+parser.add_argument("cipher_text",
+                    help="The string to be shifted. If none is given, read from stdin",
+                    nargs='?')
+args = parser.parse_args()
+
+def get_substrings(input_string):
+    length = len(input_string)
+    return [input_string[i:j+1] for i in xrange(length) for j in xrange(i+4,length)]
+
+cipher = args.cipher_text if args.cipher_text else raw_input()
+
+match_found = False
+
+outs = []
+
+for i in range(1,26):
+    out = ""
+    for c in cipher:
+        if ord(c) in range(97,123):
+            out += chr(((ord(c) - 97 + i) % 26) + 97)
+        elif ord(c) in range(65,91):
+            out += chr(((ord(c) - 65 + i) % 26) + 65)
+        else:
+            out += c
+
+    if args.all:
+        print out
+    else:
+        for word in get_substrings(out):
+            # print word
+            if d.check(word):
+                match_found = True
+                print "({0: >2}) {1}".format(i,out)
+                break
+        outs.append(out)
+
+if not match_found:
+    for a in outs:
+        print "({0: >2}) {1}".format(i,a)
+

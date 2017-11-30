@@ -1,0 +1,7 @@
+#!/bin/bash
+
+if [ "$#" -ne 2 ]; then
+    echo "Usage: mkhash hash-type cipher-text"
+fi
+
+echo -n $2 | openssl $1 | sed 's/.stdin..//g'

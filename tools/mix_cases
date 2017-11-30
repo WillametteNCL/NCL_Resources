@@ -1,0 +1,41 @@
+#!/usr/bin/env python
+import sys
+
+for line in sys.stdin:
+    result = [line]
+    perms = []
+    for perm in result:
+        perms.append(perm)
+        perms.append(perm.lower())
+        perms.append(perm.title())
+        perms.append(perm.upper())
+        perms.append(perm.title().swapcase())
+    result = perms
+
+    perms = []
+    for perm in result:
+        if ' ' in perm:
+            perms.append(line)
+            perms.append(line.replace(' ', '-'))
+            perms.append(line.replace(' ', '_'))
+            perms.append(line.replace(' ', ''))
+        else:
+            perms.append(line)
+    result = perms
+
+    perms = []
+    for perm in result:
+        perms.append(perm)
+        perms.append(perm.replace("'",""))
+    result = perms
+
+    perms = []
+    for perm in result:
+        perms.append(perm)
+        perms.append(perm.replace(".",""))
+    result = perms
+
+    perms = []
+    for perm in result:
+        perm = perm.strip()
+        print perm
